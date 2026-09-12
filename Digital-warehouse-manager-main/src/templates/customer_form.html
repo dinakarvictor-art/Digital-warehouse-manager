@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}New Customer{% endblock %}
+{% block content %}
+<h1>New customer</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <p style="color:#8B3A3A;">{{ message }}</p>
+    {% endfor %}
+{% endwith %}
+
+<form method="post">
+    <p><label>First name</label><br><input type="text" name="first_name" required value="{{ form.first_name if form else '' }}"></p>
+    <p><label>Last name</label><br><input type="text" name="last_name" required value="{{ form.last_name if form else '' }}"></p>
+    <p><label>Email</label><br><input type="email" name="email" required value="{{ form.email if form else '' }}"></p>
+    <p><label>City</label><br><input type="text" name="city" value="{{ form.city if form else '' }}"></p>
+    <button type="submit">Save</button>
+    <a href="{{ url_for('customers') }}">Cancel</a>
+</form>
+{% endblock %}

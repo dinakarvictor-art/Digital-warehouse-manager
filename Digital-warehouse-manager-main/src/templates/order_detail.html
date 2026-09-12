@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+<p><a href="{{ url_for('orders') }}">&larr; Back to orders</a></p>
+<h1>Order #{{ order.id }}</h1>
+<p>
+    <a href="{{ url_for('customer_detail', customer_id=order.customer_id) }}">{{ order.customer_name }}</a>
+    &middot; {{ order.email }} &middot; {{ order.order_date }} &middot; {{ order.status }}
+</p>
+
+<table>
+    <tr><th>Product</th><th>Quantity</th><th>Unit price</th><th>Line total</th></tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.product_name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>€{{ "%.2f"|format(item.unit_price) }}</td>
+        <td>€{{ "%.2f"|format(item.line_total) }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="3" style="text-align:right; font-weight:bold;">Order total</td>
+        <td style="font-weight:bold;">€{{ "%.2f"|format(order_total) }}</td>
+    </tr>
+</table>
+{% endblock %}

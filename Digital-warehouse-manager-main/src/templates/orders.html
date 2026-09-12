@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<p><a href="{{ url_for('order_create') }}">+ New order</a></p>
+<h1>Orders</h1>
+
+<table>
+    <tr><th>Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th><th></th></tr>
+    {% for o in orders %}
+    <tr>
+        <td>#{{ o.id }}</td>
+        <td>{{ o.customer_name }}</td>
+        <td>{{ o.order_date }}</td>
+        <td>{{ o.status }}</td>
+        <td>€{{ "%.2f"|format(o.total) }}</td>
+        <td><a href="{{ url_for('order_detail', order_id=o.id) }}">View details</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

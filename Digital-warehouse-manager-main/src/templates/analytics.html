@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<h1>Analytics</h1>
+
+<h2>A. Revenue by category</h2>
+<table>
+    <tr><th>Category</th><th>Units sold</th><th>Revenue</th></tr>
+    {% for r in revenue_by_category %}
+    <tr><td>{{ r.category_name }}</td><td>{{ r.units_sold }}</td><td>€{{ "%.2f"|format(r.revenue) }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>B. Top 5 customers</h2>
+<table>
+    <tr><th>Customer</th><th>Orders</th><th>Total spent</th></tr>
+    {% for c in top_customers %}
+    <tr><td>{{ c.customer_name }}</td><td>{{ c.order_count }}</td><td>€{{ "%.2f"|format(c.total_spent) }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>C. Products never ordered</h2>
+{% if never_ordered %}
+<table>
+    <tr><th>Product</th></tr>
+    {% for p in never_ordered %}
+    <tr><td>{{ p.name }}</td></tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Every product has been ordered at least once.</p>
+{% endif %}
+
+<h2>D. Orders above average value</h2>
+<p>Average order value: <strong>€{{ "%.2f"|format(avg_order_value) }}</strong></p>
+<table>
+    <tr><th>Order</th><th>Customer</th><th>Date</th><th>Total</th></tr>
+    {% for o in above_average_orders %}
+    <tr><td>#{{ o.id }}</td><td>{{ o.customer_name }}</td><td>{{ o.order_date }}</td><td>€{{ "%.2f"|format(o.total) }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>E. Low stock products</h2>
+{% if low_stock %}
+<table>
+    <tr><th>Product</th><th>Stock</th></tr>
+    {% for p in low_stock %}
+    <tr><td>{{ p.name }}</td><td>{{ p.stock }}</td></tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No products are currently low on stock.</p>
+{% endif %}
+
+<h2>F. Sales by month</h2>
+<table>
+    <tr><th>Month</th><th>Revenue</th></tr>
+    {% for m in sales_by_month %}
+    <tr><td>{{ m.month }}</td><td>€{{ "%.2f"|format(m.revenue) }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

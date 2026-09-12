@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mini Store Manager{% endblock %}</title>
+    <style>
+        body { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+               background: #FAF7F2; color: #2B3A2E; margin: 0; }
+        header { background: #2B3A2E; padding: 16px 24px; }
+        header a { color: #FAF7F2; text-decoration: none; margin-right: 20px; }
+        header .brand { font-weight: bold; font-size: 1.1rem; }
+        main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #DCD3C0; }
+        th { background: #F1EBE0; }
+        .cards { display: flex; gap: 12px; margin-bottom: 20px; }
+        .card { background: #F1EBE0; padding: 14px 18px; border-radius: 4px; flex: 1; }
+        .card .label { font-size: 0.8rem; color: #4B5D4E; }
+        .card .value { font-size: 1.5rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+<header>
+    <a class="brand" href="/">Mini Store Manager</a>
+    <a href="/">Dashboard</a>
+    <a href="/products">Products</a>
+    <a href="/customers">Customers</a>
+    <a href="/orders">Orders</a>
+    <a href="/analytics">Analytics</a>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ customer.first_name }} {{ customer.last_name }}{% endblock %}
+{% block content %}
+<p><a href="{{ url_for('customers') }}">&larr; Back to customers</a></p>
+<h1>{{ customer.first_name }} {{ customer.last_name }}</h1>
+<p>{{ customer.email }} &middot; {{ customer.city }} &middot; customer since {{ customer.created_at }}</p>
+<p><strong>Total spent: €{{ "%.2f"|format(total_spent) }}</strong></p>
+
+<h2>Order history</h2>
+<table>
+    <tr><th>Order</th><th>Date</th><th>Status</th><th>Amount</th></tr>
+    {% for o in orders %}
+    <tr>
+        <td>#{{ o.id }}</td>
+        <td>{{ o.order_date }}</td>
+        <td>{{ o.status }}</td>
+        <td>€{{ "%.2f"|format(o.total) }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">This customer has not placed any orders yet.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

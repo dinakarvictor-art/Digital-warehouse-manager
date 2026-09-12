@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<h1>Products</h1>
+
+<form method="get" style="margin-bottom: 16px;">
+    <input type="text" name="search" placeholder="Search by name..." value="{{ search }}">
+    <select name="category_id">
+        <option value="">All categories</option>
+        {% for c in categories %}
+        <option value="{{ c.id }}" {% if category_id == c.id|string %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="sort">
+        <option value="name" {% if sort == 'name' %}selected{% endif %}>Sort: Name</option>
+        <option value="price" {% if sort == 'price' %}selected{% endif %}>Sort: Price</option>
+    </select>
+    <button type="submit">Apply</button>
+</form>
+
+<p><a href="{{ url_for('product_create') }}">+ New product</a></p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <p style="color:#8B3A3A;">{{ message }}</p>
+    {% endfor %}
+{% endwith %}
+
+<table>
+    <tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th></th></tr>
+    {% for p in products %}
+    <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.category_name }}</td>
+        <td>€{{ "%.2f"|format(p.price) }}</td>
+        <td>
+            {{ p.stock }}
+            {% if p.stock < 5 %}<span style="color:#8B3A3A; font-weight:bold;"> (low stock)</span>{% endif %}
+        </td>
+        <td>
+            <a href="{{ url_for('product_edit', product_id=p.id) }}">Edit</a>
+            <form style="display:inline" method="post" action="{{ url_for('product_delete', product_id=p.id) }}"
+                  onsubmit="return confirm('Delete this product?');">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

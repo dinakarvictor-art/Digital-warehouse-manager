@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="cards">
+    <div class="card"><div class="label">Products</div><div class="value">{{ product_count }}</div></div>
+    <div class="card"><div class="label">Customers</div><div class="value">{{ customer_count }}</div></div>
+    <div class="card"><div class="label">Orders</div><div class="value">{{ order_count }}</div></div>
+    <div class="card"><div class="label">Revenue</div><div class="value">€{{ "%.2f"|format(total_revenue) }}</div></div>
+</div>
+
+<h2>5 most recent orders</h2>
+<table>
+    <tr><th>Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th></tr>
+    {% for o in recent_orders %}
+    <tr>
+        <td>#{{ o.id }}</td>
+        <td>{{ o.customer_name }}</td>
+        <td>{{ o.order_date }}</td>
+        <td>{{ o.status }}</td>
+        <td>€{{ "%.2f"|format(o.total) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if best_seller %}
+<h2>Best-selling product</h2>
+<p>{{ best_seller.name }} — {{ best_seller.total_qty }} units sold</p>
+{% endif %}
+{% endblock %}

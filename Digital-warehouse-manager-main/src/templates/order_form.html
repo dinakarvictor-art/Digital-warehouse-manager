@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}New Order{% endblock %}
+{% block content %}
+<h1>New order</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <p style="color:#8B3A3A;">{{ message }}</p>
+    {% endfor %}
+{% endwith %}
+
+<form method="post">
+    <p>
+        <label>Customer</label><br>
+        <select name="customer_id" required>
+            <option value="">-- select --</option>
+            {% for c in customers %}
+            <option value="{{ c.id }}">{{ c.first_name }} {{ c.last_name }}</option>
+            {% endfor %}
+        </select>
+    </p>
+
+    <h2>Products</h2>
+    <div id="cart-rows"></div>
+    <button type="button" id="add-row">+ Add product</button>
+
+    <p><button type="submit">Create order</button></p>
+</form>
+
+<script>
+    const products = [
+        {% for p in products %}
+        {id: {{ p.id }}, name: {{ p.name|tojson }}, stock: {{ p.stock }}},
+        {% endfor %}
+    ];
+    const container = document.getElementById('cart-rows');
+
+    function addRow() {
+        const row = document.createElement('div');
+        const options = products.map(p => `<option value="${p.id}">${p.name} (stock: ${p.stock})</option>`).join('');
+        row.innerHTML = `
+            <select name="product_id"><option value="">-- select --</option>${options}</select>
+            <input type="number" name="quantity" min="1" placeholder="Qty">
+            <button type="button" class="remove">Remove</button>
+        `;
+        row.querySelector('.remove').addEventListener('click', () => row.remove());
+        container.appendChild(row);
+    }
+    document.getElementById('add-row').addEventListener('click', addRow);
+    addRow();
+</script>
+{% endblock %}

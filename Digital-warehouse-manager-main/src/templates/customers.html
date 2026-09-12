@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Customers{% endblock %}
+{% block content %}
+<h1>Customers</h1>
+
+<p><a href="{{ url_for('customer_create') }}">+ New customer</a></p>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        <p style="color:#8B3A3A;">{{ message }}</p>
+    {% endfor %}
+{% endwith %}
+
+<form method="get" style="margin-bottom: 16px;">
+    <input type="text" name="search" placeholder="Search by name..." value="{{ search }}">
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <tr><th>Name</th><th>Email</th><th>City</th><th>Orders</th><th>Total spent</th><th></th></tr>
+    {% for c in customers %}
+    <tr>
+        <td><a href="{{ url_for('customer_detail', customer_id=c.id) }}">{{ c.first_name }} {{ c.last_name }}</a></td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.city }}</td>
+        <td>{{ c.order_count }}</td>
+        <td>€{{ "%.2f"|format(c.total_spent) }}</td>
+        <td>
+            <form style="display:inline" method="post" action="{{ url_for('customer_delete', customer_id=c.id) }}"
+                  onsubmit="return confirm('Delete this customer?');">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
